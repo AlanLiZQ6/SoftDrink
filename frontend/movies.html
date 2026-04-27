@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoftDrink | 电影</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="category-page">
+  <div class="category-hero category-movies">
+    <header class="category-topbar">
+      <a class="brand-link" href="./index.html">SoftDrink</a>
+      <a class="profile-entry" href="#profile" aria-label="个人信息入口">
+        <span class="avatar">C</span>
+        <span>
+          <strong>Christopher</strong>
+          <small>个人主页</small>
+        </span>
+      </a>
+    </header>
+
+    <section class="category-splash">
+      <div class="category-title-block">
+        <p class="eyebrow">电影</p>
+        <h1>电影主页</h1>
+        <p>从正在热映的院线新片，到榜单常驻的经典修复片，把新鲜感和讨论度都堆在同一个入口里。</p>
+      </div>
+
+      <div class="featured-poster-card">
+        <div class="featured-poster-copy">
+          <span class="featured-kicker">推荐作品</span>
+          <h2>午夜放映</h2>
+          <p>都市悬疑、夜色霓虹、口碑发酵很快，适合占据整页上半部分的主海报位置。</p>
+          <div class="featured-meta">
+            <span>热映中</span>
+            <span>8.8 分</span>
+            <span>734 条评论</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main class="category-content">
+    <section class="filter-strip">
+      <div class="filter-tabs" aria-label="内容分组">
+        <a href="#latest">最新</a>
+        <a href="#hot">热门</a>
+        <a href="#recommended">推荐</a>
+        <a href="#search">完整检索</a>
+      </div>
+      <div class="filter-tags" id="search" aria-label="筛选条件">
+        <span>时间</span>
+        <span>分类</span>
+        <span>地区</span>
+        <span>评分</span>
+        <span>语言</span>
+      </div>
+    </section>
+
+    <section class="shelf-section" id="latest">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">最新</p>
+          <h3>刚刚进入讨论区的院线和流媒体新片</h3>
+        </div>
+      </div>
+      <div class="card-grid">
+        <article class="media-card">
+          <img src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=900&q=80" alt="电影院座椅与银幕">
+          <div class="card-body">
+            <div class="card-meta"><span>新片</span><span>1.2k 收藏</span></div>
+            <h4>平行夏日</h4>
+            <p>轻科幻爱情题材，适合放在新片首屏吸引点击。</p>
+          </div>
+        </article>
+        <article class="media-card">
+          <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=900&q=80" alt="放映厅光影">
+          <div class="card-body">
+            <div class="card-meta"><span>首映</span><span>321 想看</span></div>
+            <h4>北纬十七度</h4>
+            <p>旅行题材公路片，视觉很明亮，适合做新片区第二张海报。</p>
+          </div>
+        </article>
+        <article class="media-card">
+          <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80" alt="电影海报与光线">
+          <div class="card-body">
+            <div class="card-meta"><span>刚上线</span><span>204 评论</span></div>
+            <h4>回声房间</h4>
+            <p>心理惊悚片，适合带出用户评分和短评热区。</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="shelf-section" id="hot">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">热门</p>
+          <h3>热度和评分一起抬头的作品</h3>
+        </div>
+      </div>
+      <div class="card-grid">
+        <article class="media-card">
+          <img src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?auto=format&fit=crop&w=900&q=80" alt="电影放映机">
+          <div class="card-body">
+            <div class="card-meta"><span>榜单</span><span>8.9 分</span></div>
+            <h4>旧梦修复计划</h4>
+            <p>复古修复电影专题，天然适合经典电影爱好者扎堆讨论。</p>
+          </div>
+        </article>
+        <article class="media-card">
+          <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=900&q=80" alt="电影专题海报">
+          <div class="card-body">
+            <div class="card-meta"><span>热映</span><span>734 评论</span></div>
+            <h4>午夜放映</h4>
+            <p>剧情谜团多，用户会自然展开分析帖和结局猜测。</p>
+          </div>
+        </article>
+        <article class="media-card">
+          <img src="https://images.unsplash.com/photo-1513106580091-1d82408b8cd6?auto=format&fit=crop&w=900&q=80" alt="放映前的影院场景">
+          <div class="card-body">
+            <div class="card-meta"><span>口碑</span><span>9.0 分</span></div>
+            <h4>海风消失之后</h4>
+            <p>文艺片路线，适合搭配长评和导演专题。</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="shelf-section" id="recommended">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">推荐</p>
+          <h3>适合做首页精选位的视觉型作品</h3>
+        </div>
+      </div>
+      <div class="card-grid">
+        <article class="media-card">
+          <img src="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?auto=format&fit=crop&w=900&q=80" alt="夜晚城市灯光">
+          <div class="card-body">
+            <div class="card-meta"><span>编辑选</span><span>都市悬疑</span></div>
+            <h4>霓虹背面</h4>
+            <p>海报色彩很抓眼，适合活动专题和首页焦点图。</p>
+          </div>
+        </article>
+        <article class="media-card">
+          <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=900&q=80" alt="复古胶片">
+          <div class="card-body">
+            <div class="card-meta"><span>推荐</span><span>作者电影</span></div>
+            <h4>春天留给昨天</h4>
+            <p>作者气质明显，很适合配导演页和风格标签。</p>
+          </div>
+        </article>
+        <article class="media-card">
+          <img src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80" alt="银幕前观众">
+          <div class="card-body">
+            <div class="card-meta"><span>专题</span><span>高讨论</span></div>
+            <h4>双重月亮</h4>
+            <p>偏设定向的剧情片，适合做影迷社区深聊入口。</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
