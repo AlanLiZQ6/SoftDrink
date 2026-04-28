@@ -10,9 +10,11 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body class="category-page">
+  <div class="page-transition-overlay" aria-hidden="true"></div>
   <div class="category-hero category-music">
     <header class="category-topbar">
-      <a class="brand-link" href="./index.html">SoftDrink</a>
+      <a class="brand-link transition-link" href="./index.html">SoftDrink</a>
+      <div id="global-search-root" class="global-search-slot" data-page="category"></div>
       <a class="profile-entry" href="#profile" aria-label="个人信息入口">
         <span class="avatar">C</span>
         <span>
@@ -52,13 +54,7 @@
         <a href="#recommended">推荐</a>
         <a href="#search">完整检索</a>
       </div>
-      <div class="filter-tags" id="search" aria-label="筛选条件">
-        <span>时间</span>
-        <span>流派</span>
-        <span>地区</span>
-        <span>形式</span>
-        <span>热度</span>
-      </div>
+      <div id="search" class="advanced-search-root" data-category="music"></div>
     </section>
 
     <section class="shelf-section" id="latest">
@@ -69,7 +65,7 @@
         </div>
       </div>
       <div class="card-grid">
-        <article class="media-card">
+        <article class="media-card" data-title="夜航电台" data-year="2026" data-genre="电子" data-region="中国" data-type="单曲" data-rating="8+">
           <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=900&q=80" alt="录音设备与耳机">
           <div class="card-body">
             <div class="card-meta"><span>新单曲</span><span>941 想听</span></div>
@@ -77,7 +73,7 @@
             <p>电子氛围强，适合挂试听入口和歌词摘录。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="Velvet Static" data-year="2026" data-genre="流行" data-region="欧美" data-type="专辑" data-rating="8+">
           <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=900&q=80" alt="音乐演出现场">
           <div class="card-body">
             <div class="card-meta"><span>新碟</span><span>8.6 分</span></div>
@@ -85,7 +81,7 @@
             <p>独立流行新专辑，适合首屏主打。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="天桥留声" data-year="2025" data-genre="民谣" data-region="中国" data-type="EP" data-rating="7+">
           <img src="https://images.unsplash.com/photo-1501612780327-45045538702b?auto=format&fit=crop&w=900&q=80" alt="黑胶唱片">
           <div class="card-body">
             <div class="card-meta"><span>EP</span><span>117 评论</span></div>
@@ -104,7 +100,7 @@
         </div>
       </div>
       <div class="card-grid">
-        <article class="media-card">
+        <article class="media-card" data-title="North Avenue" data-year="2020-2024" data-genre="摇滚" data-region="欧美" data-type="艺人" data-rating="8+">
           <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=900&q=80" alt="舞台灯光">
           <div class="card-body">
             <div class="card-meta"><span>艺人</span><span>561 关注</span></div>
@@ -112,7 +108,7 @@
             <p>乐队页天然适合串联专辑、单曲和巡演动态。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="静电海岸" data-year="2026" data-genre="R&B" data-region="韩国" data-type="单曲" data-rating="7+">
           <img src="https://images.unsplash.com/photo-1494232410401-ad00d5433cfa?auto=format&fit=crop&w=900&q=80" alt="音乐人演奏">
           <div class="card-body">
             <div class="card-meta"><span>热单</span><span>3.2k 收藏</span></div>
@@ -120,7 +116,7 @@
             <p>旋律上头，很适合让用户往评论区里写听后感。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="蓝线列车" data-year="2025" data-genre="电子" data-region="日本" data-type="专辑" data-rating="8+">
           <img src="https://images.unsplash.com/photo-1507838153414-b4b713384a76?auto=format&fit=crop&w=900&q=80" alt="现场乐队">
           <div class="card-body">
             <div class="card-meta"><span>热榜</span><span>8.9 分</span></div>
@@ -139,7 +135,7 @@
         </div>
       </div>
       <div class="card-grid">
-        <article class="media-card">
+        <article class="media-card" data-title="Afterlight Choir" data-year="2020-2024" data-genre="流行" data-region="欧美" data-type="艺人" data-rating="8+">
           <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=900&q=80" alt="舞台与观众">
           <div class="card-body">
             <div class="card-meta"><span>编辑选</span><span>梦流行</span></div>
@@ -147,7 +143,7 @@
             <p>视觉层次很足，适合做乐评和艺人页组合入口。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="深夜波段" data-year="2010-2019" data-genre="电子" data-region="独立厂牌" data-type="EP" data-rating="7+">
           <img src="https://images.unsplash.com/photo-1496293455970-f8581aae0e3b?auto=format&fit=crop&w=900&q=80" alt="合成器键盘">
           <div class="card-body">
             <div class="card-meta"><span>推荐</span><span>电子</span></div>
@@ -155,7 +151,7 @@
             <p>很适合和城市夜景风格的海报背景配合。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="白噪声公园" data-year="2020-2024" data-genre="摇滚" data-region="中国" data-type="现场专辑" data-rating="8+">
           <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=900&q=80" alt="现场灯光人群">
           <div class="card-body">
             <div class="card-meta"><span>专题</span><span>高互动</span></div>
@@ -166,5 +162,8 @@
       </div>
     </section>
   </main>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>

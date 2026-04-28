@@ -10,9 +10,11 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body class="category-page">
+  <div class="page-transition-overlay" aria-hidden="true"></div>
   <div class="category-hero category-books">
     <header class="category-topbar">
-      <a class="brand-link" href="./index.html">SoftDrink</a>
+      <a class="brand-link transition-link" href="./index.html">SoftDrink</a>
+      <div id="global-search-root" class="global-search-slot" data-page="category"></div>
       <a class="profile-entry" href="#profile" aria-label="个人信息入口">
         <span class="avatar">C</span>
         <span>
@@ -52,13 +54,7 @@
         <a href="#recommended">推荐</a>
         <a href="#search">完整检索</a>
       </div>
-      <div class="filter-tags" id="search" aria-label="筛选条件">
-        <span>时间</span>
-        <span>分类</span>
-        <span>地区</span>
-        <span>作者</span>
-        <span>出版社</span>
-      </div>
+      <div id="search" class="advanced-search-root" data-category="books"></div>
     </section>
 
     <section class="shelf-section" id="latest">
@@ -69,7 +65,7 @@
         </div>
       </div>
       <div class="card-grid">
-        <article class="media-card">
+        <article class="media-card" data-title="玻璃岛地图" data-year="2026" data-genre="科幻" data-region="欧美" data-type="小说" data-rating="8+">
           <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=900&q=80" alt="书架">
           <div class="card-body">
             <div class="card-meta"><span>新书</span><span>986 想读</span></div>
@@ -77,7 +73,7 @@
             <p>世界观型小说，适合做人物卡和设定讨论扩展。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="被雨困住的下午" data-year="2025" data-genre="文学" data-region="中国" data-type="散文" data-rating="7+">
           <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=900&q=80" alt="打开的书">
           <div class="card-body">
             <div class="card-meta"><span>上架</span><span>214 收藏</span></div>
@@ -85,7 +81,7 @@
             <p>散文集路线，适合做摘录和阅读心情分享。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="星图以西" data-year="2026" data-genre="科幻" data-region="日本" data-type="小说" data-rating="7+">
           <img src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&w=900&q=80" alt="桌上的阅读场景">
           <div class="card-body">
             <div class="card-meta"><span>刚出版</span><span>109 评论</span></div>
@@ -104,7 +100,7 @@
         </div>
       </div>
       <div class="card-grid">
-        <article class="media-card">
+        <article class="media-card" data-title="向夜晚写信的人" data-year="2020-2024" data-genre="非虚构" data-region="中国" data-type="传记" data-rating="8+">
           <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=900&q=80" alt="阅读时刻">
           <div class="card-body">
             <div class="card-meta"><span>热读</span><span>8.8 分</span></div>
@@ -112,7 +108,7 @@
             <p>非虚构题材，特别适合长评和句子摘录传播。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="冬夜航程" data-year="2025" data-genre="悬疑" data-region="韩国" data-type="小说" data-rating="8+">
           <img src="https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=900&q=80" alt="堆叠的书">
           <div class="card-body">
             <div class="card-meta"><span>榜单</span><span>2.3k 想读</span></div>
@@ -120,7 +116,7 @@
             <p>悬疑小说，适合读书会分章节讨论。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="海边失眠手记" data-year="经典" data-genre="文学" data-region="拉美" data-type="散文" data-rating="9+">
           <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=900&q=80" alt="图书馆书架">
           <div class="card-body">
             <div class="card-meta"><span>口碑</span><span>9.1 分</span></div>
@@ -139,7 +135,7 @@
         </div>
       </div>
       <div class="card-grid">
-        <article class="media-card">
+        <article class="media-card" data-title="燃烧之前的森林" data-year="2010-2019" data-genre="文学" data-region="欧美" data-type="小说" data-rating="8+">
           <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=900&q=80" alt="封面陈列">
           <div class="card-body">
             <div class="card-meta"><span>编辑选</span><span>文学</span></div>
@@ -147,7 +143,7 @@
             <p>封面和书名都很有记忆点，适合做主视觉。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="回音植物园" data-year="2020-2024" data-genre="艺术" data-region="日本" data-type="绘本" data-rating="7+">
           <img src="https://images.unsplash.com/photo-1463320726281-696a485928c7?auto=format&fit=crop&w=900&q=80" alt="桌面上的书与花">
           <div class="card-body">
             <div class="card-meta"><span>推荐</span><span>散文</span></div>
@@ -155,7 +151,7 @@
             <p>轻柔路线，适合串联摘录和作者页。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="纸页深处" data-year="经典" data-genre="非虚构" data-region="欧美" data-type="学术" data-rating="8+">
           <img src="https://images.unsplash.com/photo-1511108690759-009324a90311?auto=format&fit=crop&w=900&q=80" alt="夜读灯光">
           <div class="card-body">
             <div class="card-meta"><span>专题</span><span>高收藏</span></div>
@@ -166,5 +162,8 @@
       </div>
     </section>
   </main>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>

@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+  <div class="page-transition-overlay" aria-hidden="true"></div>
   <div class="page-shell">
     <aside class="sidebar">
       <div>
@@ -19,11 +20,11 @@
       </div>
 
       <nav class="category-nav" aria-label="内容分类">
-        <a href="./movies.html">电影</a>
-        <a href="./tv.html">电视剧</a>
-        <a href="./music.html">音乐</a>
-        <a href="./books.html">书籍</a>
-        <a href="./events.html">演出活动</a>
+        <a class="transition-link" href="./movies.html">电影</a>
+        <a class="transition-link" href="./tv.html">电视剧</a>
+        <a class="transition-link" href="./music.html">音乐</a>
+        <a class="transition-link" href="./books.html">书籍</a>
+        <a class="transition-link" href="./events.html">演出活动</a>
       </nav>
 
       <div class="sidebar-note">
@@ -34,7 +35,8 @@
 
     <main class="content">
       <header class="topbar">
-        <div class="search-pill">搜索电影、音乐、书籍、演出</div>
+        <div class="topbar-label">探索首页</div>
+        <div id="global-search-root" class="global-search-slot" data-page="home"></div>
         <a class="profile-entry" href="#profile" aria-label="个人信息入口">
           <span class="avatar">C</span>
           <span>
@@ -72,7 +74,7 @@
             <p class="eyebrow">电影</p>
             <h3>最新上映与口碑热门</h3>
           </div>
-          <a href="./movies.html">查看全部</a>
+          <a class="transition-link" href="./movies.html">查看全部</a>
         </div>
         <div class="card-grid">
           <article class="media-card">
@@ -108,7 +110,7 @@
             <p class="eyebrow">电视剧</p>
             <h3>追更中的讨论焦点</h3>
           </div>
-          <a href="./tv.html">查看全部</a>
+          <a class="transition-link" href="./tv.html">查看全部</a>
         </div>
         <div class="card-grid">
           <article class="media-card">
@@ -144,7 +146,7 @@
             <p class="eyebrow">音乐</p>
             <h3>新专辑、热门单曲与艺人页</h3>
           </div>
-          <a href="./music.html">查看全部</a>
+          <a class="transition-link" href="./music.html">查看全部</a>
         </div>
         <div class="card-grid">
           <article class="media-card">
@@ -180,7 +182,7 @@
             <p class="eyebrow">书籍</p>
             <h3>近期上架与阅读清单</h3>
           </div>
-          <a href="./books.html">查看全部</a>
+          <a class="transition-link" href="./books.html">查看全部</a>
         </div>
         <div class="card-grid">
           <article class="media-card">
@@ -216,7 +218,7 @@
             <p class="eyebrow">演出活动</p>
             <h3>同城开演与即将售罄</h3>
           </div>
-          <a href="./events.html">查看全部</a>
+          <a class="transition-link" href="./events.html">查看全部</a>
         </div>
         <div class="card-grid">
           <article class="media-card">
@@ -247,5 +249,8 @@
       </section>
     </main>
   </div>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>

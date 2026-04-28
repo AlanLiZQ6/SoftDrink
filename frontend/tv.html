@@ -10,9 +10,11 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body class="category-page">
+  <div class="page-transition-overlay" aria-hidden="true"></div>
   <div class="category-hero category-tv">
     <header class="category-topbar">
-      <a class="brand-link" href="./index.html">SoftDrink</a>
+      <a class="brand-link transition-link" href="./index.html">SoftDrink</a>
+      <div id="global-search-root" class="global-search-slot" data-page="category"></div>
       <a class="profile-entry" href="#profile" aria-label="个人信息入口">
         <span class="avatar">C</span>
         <span>
@@ -52,13 +54,7 @@
         <a href="#recommended">推荐</a>
         <a href="#search">完整检索</a>
       </div>
-      <div class="filter-tags" id="search" aria-label="筛选条件">
-        <span>时间</span>
-        <span>题材</span>
-        <span>地区</span>
-        <span>平台</span>
-        <span>状态</span>
-      </div>
+      <div id="search" class="advanced-search-root" data-category="tv"></div>
     </section>
 
     <section class="shelf-section" id="latest">
@@ -69,7 +65,7 @@
         </div>
       </div>
       <div class="card-grid">
-        <article class="media-card">
+        <article class="media-card" data-title="雾灯尽头" data-year="2026" data-genre="悬疑" data-region="中国" data-type="Netflix" data-rating="8+">
           <img src="https://images.unsplash.com/photo-1499364615650-ec38552f4f34?auto=format&fit=crop&w=900&q=80" alt="电视剧摄影场景">
           <div class="card-body">
             <div class="card-meta"><span>更新中</span><span>847 在看</span></div>
@@ -77,7 +73,7 @@
             <p>心理剧气质很浓，适合做逐集评论和角色线分析。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="灰域来信" data-year="2025" data-genre="都市" data-region="韩国" data-type="Disney+" data-rating="7+">
           <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="雾中的街道">
           <div class="card-body">
             <div class="card-meta"><span>新剧</span><span>324 收藏</span></div>
@@ -85,7 +81,7 @@
             <p>悬疑设定强，首页很适合挂角色关系图。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="暮色公寓" data-year="2026" data-genre="喜剧" data-region="日本" data-type="电视台" data-rating="6+">
           <img src="https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?auto=format&fit=crop&w=900&q=80" alt="片场监视器">
           <div class="card-body">
             <div class="card-meta"><span>首周</span><span>118 评论</span></div>
@@ -104,7 +100,7 @@
         </div>
       </div>
       <div class="card-grid">
-        <article class="media-card">
+        <article class="media-card" data-title="双城雨季" data-year="2025" data-genre="爱情" data-region="中国" data-type="HBO" data-rating="8+">
           <img src="https://images.unsplash.com/photo-1516724562728-afc824a36e84?auto=format&fit=crop&w=900&q=80" alt="夜色街景">
           <div class="card-body">
             <div class="card-meta"><span>爆帖</span><span>913 回复</span></div>
@@ -112,7 +108,7 @@
             <p>角色关系复杂，适合社区自然长出站队和磕 CP 讨论。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="倒叙法则" data-year="2020-2024" data-genre="悬疑" data-region="英国" data-type="Apple TV+" data-rating="9+">
           <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=900&q=80" alt="电视屏幕光影">
           <div class="card-body">
             <div class="card-meta"><span>高分</span><span>9.2 分</span></div>
@@ -120,7 +116,7 @@
             <p>推理结构复杂，特别适合做逐集复盘区。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="第二条河流" data-year="2020-2024" data-genre="都市" data-region="美国" data-type="Netflix" data-rating="8+">
           <img src="https://images.unsplash.com/photo-1517602302552-471fe67acf66?auto=format&fit=crop&w=900&q=80" alt="屏幕播放画面">
           <div class="card-body">
             <div class="card-meta"><span>口碑</span><span>2.1k 想看</span></div>
@@ -139,7 +135,7 @@
         </div>
       </div>
       <div class="card-grid">
-        <article class="media-card">
+        <article class="media-card" data-title="凌晨四点前" data-year="2010-2019" data-genre="都市" data-region="中国" data-type="电视台" data-rating="7+">
           <img src="https://images.unsplash.com/photo-1495567720989-cebdbdd97913?auto=format&fit=crop&w=900&q=80" alt="城市夜景">
           <div class="card-body">
             <div class="card-meta"><span>编辑选</span><span>都市剧</span></div>
@@ -147,7 +143,7 @@
             <p>视觉统一度高，很适合分类页上半屏海报气氛。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="天台会议" data-year="2025" data-genre="喜剧" data-region="美国" data-type="Apple TV+" data-rating="7+">
           <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=900&q=80" alt="办公楼玻璃幕墙">
           <div class="card-body">
             <div class="card-meta"><span>推荐</span><span>职场剧</span></div>
@@ -155,7 +151,7 @@
             <p>节奏明快，适合带出人物档案和台词截图分享。</p>
           </div>
         </article>
-        <article class="media-card">
+        <article class="media-card" data-title="长夏有声" data-year="2020-2024" data-genre="爱情" data-region="韩国" data-type="Disney+" data-rating="8+">
           <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80" alt="窗边的人像光影">
           <div class="card-body">
             <div class="card-meta"><span>专题</span><span>成长系</span></div>
@@ -166,5 +162,8 @@
       </div>
     </section>
   </main>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>
