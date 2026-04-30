@@ -284,6 +284,10 @@ img {
   box-shadow: var(--shadow);
 }
 
+.work-card {
+  cursor: pointer;
+}
+
 .media-card img {
   aspect-ratio: 4 / 4.8;
   object-fit: cover;
