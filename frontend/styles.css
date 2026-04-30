@@ -991,6 +991,12 @@ body.is-transitioning .category-content {
     url("https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=1800&q=80");
 }
 
+.profile-hero {
+  background-image:
+    linear-gradient(180deg, rgba(5, 12, 18, 0.18) 0%, rgba(5, 12, 18, 0.1) 34%, rgba(7, 19, 28, 0.92) 70%, #07131c 100%),
+    url("https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1800&q=80");
+}
+
 .item-hero-layout {
   min-height: calc(76vh - 84px);
   padding: 34px 0 40px;
@@ -998,6 +1004,68 @@ body.is-transitioning .category-content {
   grid-template-columns: 300px minmax(0, 1fr);
   gap: 28px;
   align-items: end;
+}
+
+.profile-hero-layout {
+  min-height: calc(76vh - 84px);
+  padding: 34px 0 40px;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+}
+
+.profile-avatar-panel {
+  display: grid;
+  place-items: center;
+}
+
+.profile-avatar-large {
+  width: 172px;
+  height: 172px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #f15b42, #f7a35f);
+  color: #09121a;
+  font-size: 72px;
+  font-weight: 800;
+  box-shadow: var(--shadow);
+}
+
+.profile-main-info {
+  display: grid;
+  gap: 16px;
+  max-width: 820px;
+}
+
+.profile-main-info h1 {
+  margin: 0;
+  font-size: clamp(40px, 4vw, 70px);
+  line-height: 1;
+}
+
+.profile-identity {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.profile-identity span,
+.collection-card-body span {
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(7, 19, 28, 0.42);
+  color: #e8f1f4;
+  font-size: 13px;
+}
+
+.profile-intro,
+.collection-note {
+  margin: 0;
+  color: #d7e6ec;
+  line-height: 1.7;
 }
 
 .item-cover-wrap {
@@ -1165,6 +1233,37 @@ body.is-transitioning .category-content {
   gap: 12px;
 }
 
+.collection-grid,
+.engagement-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.collection-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(7, 19, 28, 0.58);
+  box-shadow: var(--shadow);
+}
+
+.collection-card img {
+  aspect-ratio: 4 / 2.8;
+  object-fit: cover;
+}
+
+.collection-card-body {
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.collection-card-body h4 {
+  margin: 0;
+  font-size: 22px;
+}
+
 @media (max-width: 900px) {
   .topbar,
   .category-topbar,
@@ -1188,9 +1287,12 @@ body.is-transitioning .category-content {
   }
 
   .item-hero-layout,
+  .profile-hero-layout,
   .item-meta-grid,
   .rating-overview,
-  .review-grid {
+  .review-grid,
+  .collection-grid,
+  .engagement-grid {
     grid-template-columns: 1fr;
   }
 }
