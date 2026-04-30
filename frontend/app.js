@@ -10,15 +10,15 @@
   ];
 
   const globalSearchIndex = [
-    { title: "午夜放映", type: "电影", meta: "热映中 · 8.8 分", href: "./movies.html" },
+    { title: "午夜放映", type: "电影", meta: "热映中 · 8.8 分", href: "./movie-detail.html" },
     { title: "平行夏日", type: "电影", meta: "科幻爱情 · 最新上架", href: "./movies.html" },
-    { title: "海岸线以北", type: "电视剧", meta: "更新中 · 9.1 分", href: "./tv.html" },
+    { title: "海岸线以北", type: "电视剧", meta: "更新中 · 9.1 分", href: "./tv-detail.html" },
     { title: "双城雨季", type: "电视剧", meta: "社区热聊 · 都市群像", href: "./tv.html" },
-    { title: "Velvet Static", type: "音乐", meta: "独立流行 · 新专辑", href: "./music.html" },
+    { title: "Velvet Static", type: "音乐", meta: "独立流行 · 新专辑", href: "./music-detail.html" },
     { title: "夜航电台", type: "音乐", meta: "电子单曲 · 热门", href: "./music.html" },
-    { title: "最后一页之前", type: "书籍", meta: "文学新作 · 8.9 分", href: "./books.html" },
+    { title: "最后一页之前", type: "书籍", meta: "文学新作 · 8.9 分", href: "./book-detail.html" },
     { title: "玻璃岛地图", type: "书籍", meta: "世界观小说 · 986 想读", href: "./books.html" },
-    { title: "Afterglow Festival", type: "演出活动", meta: "广州 · 1.7k 想去", href: "./events.html" },
+    { title: "Afterglow Festival", type: "演出活动", meta: "广州 · 1.7k 想去", href: "./event-detail.html" },
     { title: "夏夜现场 Vol.7", type: "演出活动", meta: "上海 · 今晚 20:00", href: "./events.html" }
   ];
 
