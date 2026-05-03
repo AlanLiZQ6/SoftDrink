@@ -231,6 +231,59 @@
 
   const globalSearchIndex = buildSearchIndex();
   const REVIEW_STORAGE_KEY = "softdrink-review-state-v1";
+  const PROFILE_STORAGE_KEY = "softdrink-profile-state-v1";
+  const FOLLOW_STORAGE_KEY = "softdrink-follow-state-v1";
+  const defaultProfileState = {
+    username: "Christopher",
+    uid: "SD-204812",
+    intro: "喜欢夜间电影、独立流行、文学小说和带一点潮湿感的城市剧。收藏夹更像情绪地图，不只是清单。",
+    city: "Los Angeles",
+    avatarUrl: "",
+    backdropUrl: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1800&q=80",
+    keywords: ["夜间电影", "独立流行", "文学小说", "同城演出"]
+  };
+  const suggestedUsers = [
+    {
+      id: "mia-sun",
+      name: "Mia Sun",
+      uid: "SD-210731",
+      city: "New York",
+      bio: "偏爱都市剧、女性导演和能反复回听的流行专辑。",
+      keywords: ["都市剧", "女性导演", "Pop"],
+      avatar: "M",
+      cover: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=80"
+    },
+    {
+      id: "jun-park",
+      name: "Jun Park",
+      uid: "SD-182640",
+      city: "Seoul",
+      bio: "K-Pop、动画剧集和现场摄影，追新速度很快。",
+      keywords: ["K-Pop", "动画", "现场摄影"],
+      avatar: "J",
+      cover: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=900&q=80"
+    },
+    {
+      id: "leah-rivera",
+      name: "Leah Rivera",
+      uid: "SD-227504",
+      city: "Chicago",
+      bio: "悬疑片、文学 fiction 和巡演现场都在我的收藏夹里。",
+      keywords: ["悬疑片", "Fiction", "巡演"],
+      avatar: "L",
+      cover: "https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=900&q=80"
+    },
+    {
+      id: "arden-cho",
+      name: "Arden Cho",
+      uid: "SD-198312",
+      city: "San Francisco",
+      bio: "更喜欢带一点冷感的科幻、配乐和视觉小说。",
+      keywords: ["科幻", "配乐", "视觉小说"],
+      avatar: "A",
+      cover: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=900&q=80"
+    }
+  ];
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
@@ -600,6 +653,31 @@
     writeStoredReviewState(stored);
   }
 
+  function readStorageObject(key, fallback) {
+    try {
+      const raw = window.localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch (error) {
+      return fallback;
+    }
+  }
+
+  function writeStorageObject(key, value) {
+    try {
+      window.localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      return;
+    }
+  }
+
+  function getProfileState() {
+    return Object.assign({}, defaultProfileState, readStorageObject(PROFILE_STORAGE_KEY, {}));
+  }
+
+  function getFollowState() {
+    return readStorageObject(FOLLOW_STORAGE_KEY, {});
+  }
+
   function ReviewInteraction(props) {
     const review = props.review;
     const [liked, setLiked] = React.useState(Boolean(review.liked));
@@ -696,6 +774,339 @@
           ])
         ])
       ]) : null
+    ]);
+  }
+
+  function ProfilePage() {
+    const [profile, setProfile] = React.useState(getProfileState);
+    const [isEditing, setIsEditing] = React.useState(false);
+    const [draft, setDraft] = React.useState(getProfileState);
+    const [followState, setFollowState] = React.useState(getFollowState);
+
+    const favoriteWorks = [
+      allWorks.find(function (work) { return work.title === "Project Hail Mary"; }),
+      allWorks.find(function (work) { return work.title === "The Great Divide: The Last Of The Bugs"; }),
+      allWorks.find(function (work) { return work.title === "Heart the Lover"; })
+    ].filter(Boolean);
+
+    const folderCards = [
+      {
+        title: "失眠城市",
+        note: "霓虹、街灯、深夜电台，还有那些看完之后不想立刻睡的作品。",
+        meta: "12 个作品 · 标记：适合独处时看",
+        image: "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?auto=format&fit=crop&w=900&q=80"
+      },
+      {
+        title: "现场比耳机更好",
+        note: "更适合站着听、一起唱、散场以后还想继续聊的那些专辑和演出。",
+        meta: "9 个作品 · 标记：适合同城约听",
+        image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=900&q=80"
+      },
+      {
+        title: "句子留得住",
+        note: "会让我反复划线、摘录和回头再读的书，重点不是剧情，是余味。",
+        meta: "17 个作品 · 标记：高摘录密度",
+        image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=900&q=80"
+      }
+    ];
+
+    const profileReviews = [
+      {
+        work: allWorks.find(function (item) { return item.title === "Project Hail Mary"; }),
+        meta: "5 星 · 124 赞",
+        text: "它最好的地方不是答案，而是把未知感写得很具体，看完会立刻想进讨论区找别人怎么理解关键转折。"
+      },
+      {
+        work: allWorks.find(function (item) { return item.title === "The Great Divide: The Last Of The Bugs"; }),
+        meta: "4 星 · 88 赞",
+        text: "听感很轻，但不是没重量。像一整晚都开着窗的房间，风一直在进来。"
+      },
+      {
+        work: allWorks.find(function (item) { return item.title === "The Pitt"; }),
+        meta: "5 星 · 203 赞",
+        text: "这部剧最让我上头的是人物关系，每个角色都像故意少说了半句。"
+      }
+    ].filter(function (item) { return item.work; });
+
+    const followingCount = Object.keys(followState).filter(function (key) { return followState[key]; }).length;
+    const followerCount = 428 + followingCount * 3;
+    const keywordString = draft.keywords.join(", ");
+    const heroStyle = {
+      backgroundImage:
+        "linear-gradient(180deg, rgba(5, 12, 18, 0.16) 0%, rgba(5, 12, 18, 0.1) 34%, rgba(7, 19, 28, 0.92) 70%, #07131c 100%), url('" + (profile.backdropUrl || defaultProfileState.backdropUrl) + "')"
+    };
+
+    function saveProfile(event) {
+      event.preventDefault();
+      const nextProfile = Object.assign({}, draft, {
+        username: draft.username.trim() || defaultProfileState.username,
+        intro: draft.intro.trim() || defaultProfileState.intro,
+        city: draft.city.trim() || defaultProfileState.city,
+        avatarUrl: draft.avatarUrl.trim(),
+        backdropUrl: draft.backdropUrl.trim() || defaultProfileState.backdropUrl,
+        keywords: draft.keywords.join(",").split(",").map(function (item) {
+          return item.trim();
+        }).filter(Boolean).slice(0, 8)
+      });
+      setProfile(nextProfile);
+      setDraft(nextProfile);
+      writeStorageObject(PROFILE_STORAGE_KEY, nextProfile);
+      setIsEditing(false);
+    }
+
+    function toggleFollow(userId) {
+      const next = Object.assign({}, followState, { [userId]: !followState[userId] });
+      setFollowState(next);
+      writeStorageObject(FOLLOW_STORAGE_KEY, next);
+    }
+
+    function openEditor() {
+      setDraft(profile);
+      setIsEditing(true);
+    }
+
+    return e("div", null, [
+      e("div", { className: "item-hero profile-hero dynamic-profile-hero", style: heroStyle, key: "hero" }, [
+        e("header", { className: "category-topbar", key: "topbar" }, [
+          e("a", { className: "brand-link transition-link", href: "./index.html", key: "home" }, [
+            e("span", { className: "brand-icon", "aria-hidden": "true", key: "icon" }),
+            e("span", { key: "label" }, "返回主页")
+          ]),
+          e("div", { id: "global-search-root", className: "global-search-slot", "data-page": "profile", key: "search" }),
+          e("a", { className: "profile-entry", href: "./profile.html", "aria-label": "个人信息入口", key: "profile" }, [
+            profile.avatarUrl
+              ? e("img", { className: "avatar-image avatar-image-small", src: profile.avatarUrl, alt: profile.username + " 头像", key: "avatar" })
+              : e("span", { className: "avatar", key: "avatar" }, profile.username.slice(0, 1).toUpperCase()),
+            e("span", { key: "text" }, [
+              e("strong", { key: "name" }, profile.username),
+              e("small", { key: "meta" }, "个人主页")
+            ])
+          ])
+        ]),
+        e("section", { className: "profile-hero-layout", key: "layout" }, [
+          e("div", { className: "profile-avatar-panel", key: "avatar-panel" },
+            profile.avatarUrl
+              ? e("img", { className: "profile-avatar-large profile-avatar-image", src: profile.avatarUrl, alt: profile.username + " 头像" })
+              : e("div", { className: "profile-avatar-large" }, profile.username.slice(0, 1).toUpperCase())
+          ),
+          e("div", { className: "profile-main-info", key: "main" }, [
+            e("p", { className: "eyebrow", key: "eyebrow" }, "个人中心"),
+            e("div", { className: "profile-heading-row", key: "heading-row" }, [
+              e("h1", { key: "title" }, profile.username),
+              e("button", { type: "button", className: "accent-button profile-edit-button", onClick: openEditor, key: "edit" }, "编辑资料")
+            ]),
+            e("div", { className: "profile-identity", key: "identity" }, [
+              e("span", { key: "username" }, "用户名：" + profile.username),
+              e("span", { key: "uid" }, "UID：" + profile.uid),
+              e("span", { key: "city" }, "城市：" + profile.city)
+            ]),
+            e("p", { className: "profile-intro", key: "intro" }, profile.intro),
+            e("div", { className: "profile-keyword-row", key: "keywords" },
+              profile.keywords.map(function (keyword) {
+                return e("span", { key: keyword }, keyword);
+              })
+            ),
+            e("div", { className: "item-tag-row", key: "stats" }, [
+              e("span", { key: "works" }, "184 收藏作品"),
+              e("span", { key: "lists" }, "16 个自定义收藏夹"),
+              e("span", { key: "reviews" }, "92 条作品评价"),
+              e("span", { key: "followers" }, followerCount + " 关注者"),
+              e("span", { key: "following" }, followingCount + " 正在关注")
+            ])
+          ])
+        ])
+      ]),
+      e("main", { className: "item-content", key: "content" }, [
+        e("section", { className: "item-panel", key: "favorites" }, [
+          e("div", { className: "section-heading", key: "heading" }, [
+            e("div", { key: "copy" }, [
+              e("p", { className: "eyebrow", key: "eyebrow" }, "收藏作品"),
+              e("h3", { key: "title" }, "最近收藏与最常回看的条目")
+            ])
+          ]),
+          e("div", { className: "card-grid", key: "grid" },
+            favoriteWorks.map(function (work) {
+              return e("article", { className: "media-card work-card", "data-work-slug": work.id, key: work.id }, [
+                e("img", { src: work.cover, alt: work.title }),
+                e("div", { className: "card-body", key: "body" }, [
+                  e("div", { className: "card-meta", key: "meta" }, [
+                    e("span", { key: "category" }, categoryLabels[work.category]),
+                    e("span", { key: "mark" }, work.category === "movies" ? "已收藏" : work.category === "books" ? "读过" : "循环中")
+                  ]),
+                  e("h4", { key: "title" }, e("a", { className: "transition-link", href: buildWorkHref(work) }, work.title)),
+                  e("p", { key: "text" }, work.blurb)
+                ])
+              ]);
+            })
+          )
+        ]),
+        e("section", { className: "item-panel", key: "folders" }, [
+          e("div", { className: "section-heading", key: "heading" }, [
+            e("div", { key: "copy" }, [
+              e("p", { className: "eyebrow", key: "eyebrow" }, "自定义收藏夹"),
+              e("h3", { key: "title" }, "用名字、封面和短句展示自己的品味")
+            ])
+          ]),
+          e("div", { className: "collection-grid", key: "grid" },
+            folderCards.map(function (item) {
+              return e("article", { className: "collection-card", key: item.title }, [
+                e("img", { src: item.image, alt: item.title }),
+                e("div", { className: "collection-card-body", key: "body" }, [
+                  e("h4", { key: "title" }, item.title),
+                  e("p", { className: "collection-note", key: "note" }, item.note),
+                  e("span", { key: "meta" }, item.meta)
+                ])
+              ]);
+            })
+          )
+        ]),
+        e("section", { className: "item-panel", key: "reviews" }, [
+          e("div", { className: "section-heading", key: "heading" }, [
+            e("div", { key: "copy" }, [
+              e("p", { className: "eyebrow", key: "eyebrow" }, "作品评价"),
+              e("h3", { key: "title" }, "留在作品页里的评分、短评和长评")
+            ])
+          ]),
+          e("div", { className: "all-reviews-list", key: "list" },
+            profileReviews.map(function (item) {
+              return e("article", { className: "long-review-card", key: item.work.id }, [
+                e("div", { className: "long-review-head", key: "head" }, [
+                  e("strong", { key: "title" }, e("a", { className: "transition-link", href: buildWorkHref(item.work) }, item.work.title)),
+                  e("span", { key: "meta" }, item.meta)
+                ]),
+                e("p", { key: "text" }, item.text)
+              ]);
+            })
+          )
+        ]),
+        e("section", { className: "item-panel", key: "social" }, [
+          e("div", { className: "section-heading", key: "heading" }, [
+            e("div", { key: "copy" }, [
+              e("p", { className: "eyebrow", key: "eyebrow" }, "关注关系"),
+              e("h3", { key: "title" }, "关注喜欢相似作品的人")
+            ])
+          ]),
+          e("div", { className: "social-summary-grid", key: "summary" }, [
+            e("article", { className: "review-card", key: "following-card" }, [
+              e("strong", { key: "title" }, "正在关注"),
+              e("span", { key: "meta" }, "兴趣延展"),
+              e("p", { key: "text" }, "你现在关注了 " + followingCount + " 位用户，系统会优先带出他们最近收藏和评分的作品。")
+            ]),
+            e("article", { className: "review-card", key: "followers-card" }, [
+              e("strong", { key: "title" }, "关注者"),
+              e("span", { key: "meta" }, "个人影响力"),
+              e("p", { key: "text" }, "目前有 " + followerCount + " 位用户在看你的收藏夹和作品评价。")
+            ]),
+            e("article", { className: "review-card", key: "keywords-card" }, [
+              e("strong", { key: "title" }, "个人关键词"),
+              e("span", { key: "meta" }, "主页识别度"),
+              e("p", { key: "text" }, "现在展示的关键词是：" + profile.keywords.join(" / ") + "。")
+            ])
+          ]),
+          e("div", { className: "follow-grid", key: "users" },
+            suggestedUsers.map(function (user) {
+              const followed = Boolean(followState[user.id]);
+              return e("article", { className: "follow-card", key: user.id }, [
+                e("img", { className: "follow-card-cover", src: user.cover, alt: user.name }),
+                e("div", { className: "follow-card-body", key: "body" }, [
+                  e("div", { className: "follow-card-head", key: "head" }, [
+                    e("span", { className: "follow-card-avatar", key: "avatar" }, user.avatar),
+                    e("div", { key: "copy" }, [
+                      e("strong", { key: "name" }, user.name),
+                      e("p", { key: "uid" }, user.uid + " · " + user.city)
+                    ]),
+                    e("button", {
+                      type: "button",
+                      className: followed ? "review-action is-active follow-toggle" : "review-action follow-toggle",
+                      onClick: function () { toggleFollow(user.id); },
+                      key: "follow"
+                    }, followed ? "已关注" : "关注")
+                  ]),
+                  e("p", { className: "follow-card-bio", key: "bio" }, user.bio),
+                  e("div", { className: "profile-keyword-row profile-keyword-row-compact", key: "keywords" },
+                    user.keywords.map(function (keyword) {
+                      return e("span", { key: keyword }, keyword);
+                    })
+                  )
+                ])
+              ]);
+            })
+          )
+        ])
+      ]),
+      isEditing ? e("div", { className: "profile-editor-overlay", key: "overlay" },
+        e("div", { className: "profile-editor-modal" }, [
+          e("div", { className: "profile-editor-head", key: "head" }, [
+            e("strong", { key: "title" }, "编辑个人资料"),
+            e("button", { type: "button", className: "panel-close-button", onClick: function () { setIsEditing(false); }, key: "close" }, "关闭")
+          ]),
+          e("form", { className: "profile-editor-form", onSubmit: saveProfile, key: "form" }, [
+            e("label", { className: "profile-editor-field", key: "username" }, [
+              e("span", { key: "label" }, "用户名"),
+              e("input", {
+                type: "text",
+                value: draft.username,
+                onChange: function (event) { setDraft(Object.assign({}, draft, { username: event.target.value })); },
+                key: "input"
+              })
+            ]),
+            e("label", { className: "profile-editor-field", key: "avatar" }, [
+              e("span", { key: "label" }, "头像图片 URL"),
+              e("input", {
+                type: "url",
+                value: draft.avatarUrl,
+                placeholder: "https://...",
+                onChange: function (event) { setDraft(Object.assign({}, draft, { avatarUrl: event.target.value })); },
+                key: "input"
+              })
+            ]),
+            e("label", { className: "profile-editor-field", key: "backdrop" }, [
+              e("span", { key: "label" }, "背景图片 URL"),
+              e("input", {
+                type: "url",
+                value: draft.backdropUrl,
+                placeholder: "https://...",
+                onChange: function (event) { setDraft(Object.assign({}, draft, { backdropUrl: event.target.value })); },
+                key: "input"
+              })
+            ]),
+            e("label", { className: "profile-editor-field", key: "city" }, [
+              e("span", { key: "label" }, "城市"),
+              e("input", {
+                type: "text",
+                value: draft.city,
+                onChange: function (event) { setDraft(Object.assign({}, draft, { city: event.target.value })); },
+                key: "input"
+              })
+            ]),
+            e("label", { className: "profile-editor-field profile-editor-field-wide", key: "intro" }, [
+              e("span", { key: "label" }, "个人简介"),
+              e("textarea", {
+                rows: 4,
+                value: draft.intro,
+                onChange: function (event) { setDraft(Object.assign({}, draft, { intro: event.target.value })); },
+                key: "input"
+              })
+            ]),
+            e("label", { className: "profile-editor-field profile-editor-field-wide", key: "keywords" }, [
+              e("span", { key: "label" }, "个人关键词"),
+              e("input", {
+                type: "text",
+                value: keywordString,
+                placeholder: "夜间电影, 独立流行, 文学小说",
+                onChange: function (event) {
+                  setDraft(Object.assign({}, draft, { keywords: event.target.value.split(",") }));
+                },
+                key: "input"
+              })
+            ]),
+            e("div", { className: "profile-editor-actions", key: "actions" }, [
+              e("span", { className: "follow-up-hint", key: "hint" }, "资料会保存在当前浏览器里，方便你持续调效果。"),
+              e("button", { type: "submit", className: "accent-button", key: "submit" }, "保存资料")
+            ])
+          ])
+        ])
+      ) : null
     ]);
   }
 
@@ -923,6 +1334,15 @@
     ReactDOM.createRoot(root).render(e(WorkDetailPage, { work: work }));
   }
 
+  function mountProfilePage() {
+    const root = document.getElementById("profile-root");
+    if (!root) {
+      return;
+    }
+
+    ReactDOM.createRoot(root).render(e(ProfilePage));
+  }
+
   function extractBackgroundUrl(element) {
     const backgroundImage = window.getComputedStyle(element).backgroundImage || "";
     const matches = Array.from(backgroundImage.matchAll(/url\((['"]?)(.*?)\1\)/g));
@@ -1109,6 +1529,7 @@
 
   function init() {
     mountWorkDetailPage();
+    mountProfilePage();
     enhanceWorkLinks();
     mountReactIslands();
     setupAdaptiveContrast();
