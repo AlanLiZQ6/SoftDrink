@@ -1345,6 +1345,122 @@ body.is-transitioning .item-content {
   line-height: 1.7;
 }
 
+.rating-supporting-meta {
+  margin-top: 4px;
+  color: #ffd8b5;
+}
+
+.review-interaction {
+  margin-top: 16px;
+  display: grid;
+  gap: 14px;
+}
+
+.review-toolbar,
+.follow-up-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.review-action {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #e7f1f4;
+  font: inherit;
+  cursor: pointer;
+  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.review-action:hover,
+.review-action:focus-visible {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(241, 91, 66, 0.4);
+  transform: translateY(-1px);
+}
+
+.review-action.is-active {
+  background: rgba(241, 91, 66, 0.16);
+  border-color: rgba(241, 91, 66, 0.4);
+  color: #fff1ea;
+}
+
+.follow-up-thread {
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.follow-up-list {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.follow-up-item {
+  padding: 12px 12px 10px;
+  border-radius: 8px;
+  background: rgba(7, 19, 28, 0.56);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.follow-up-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.follow-up-head strong {
+  display: block;
+  color: #edf5f7;
+}
+
+.follow-up-head span,
+.follow-up-hint,
+.follow-up-empty {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.follow-up-item p,
+.follow-up-empty {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.follow-up-compose {
+  display: grid;
+  gap: 10px;
+}
+
+.follow-up-input {
+  width: 100%;
+  min-height: 96px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(7, 19, 28, 0.66);
+  color: var(--text);
+  font: inherit;
+  resize: vertical;
+}
+
+.follow-up-input:focus {
+  outline: 1px solid rgba(241, 91, 66, 0.42);
+  border-color: rgba(241, 91, 66, 0.42);
+}
+
+.review-submit {
+  min-height: 40px;
+  padding: 0 16px;
+}
+
 .all-reviews-list {
   display: grid;
   gap: 14px;

@@ -230,6 +230,7 @@
   }
 
   const globalSearchIndex = buildSearchIndex();
+  const REVIEW_STORAGE_KEY = "softdrink-review-state-v1";
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
@@ -487,22 +488,215 @@
 
   function buildShortReviews(work) {
     return [
-      { user: "softdrink_notes", score: "5 星", text: "这个条目很适合做 " + categoryLabels[work.category] + " 页的视觉中心，辨识度和讨论度都够高。" },
-      { user: "afterhours", score: "4 星", text: "看完之后很自然就会想去翻更多评价和相关作品，这点特别适合作品页。" },
-      { user: "cityfeed", score: "4 星", text: "无论是收藏、标记还是评论延展，都很适合挂在完整站点里做样例。" }
+      {
+        id: "softdrink_notes",
+        user: "softdrink_notes",
+        score: "5 星",
+        text: "这个条目很适合做 " + categoryLabels[work.category] + " 页的视觉中心，辨识度和讨论度都够高。",
+        likes: 128,
+        followUps: [
+          { user: "glassradio", time: "2 小时前", text: "我也觉得这个作品特别适合挂在首页第一屏，点进去的欲望很强。" }
+        ]
+      },
+      {
+        id: "afterhours",
+        user: "afterhours",
+        score: "4 星",
+        text: "看完之后很自然就会想去翻更多评价和相关作品，这点特别适合作品页。",
+        likes: 76,
+        followUps: [
+          { user: "nightwalk", time: "昨晚", text: "是的，而且会想继续点同类推荐，很容易形成停留。" }
+        ]
+      },
+      {
+        id: "cityfeed",
+        user: "cityfeed",
+        score: "4 星",
+        text: "无论是收藏、标记还是评论延展，都很适合挂在完整站点里做样例。",
+        likes: 59,
+        followUps: []
+      }
     ];
   }
 
   function buildLongReviews(work) {
     return [
-      { user: "longform_club", meta: "5 星 · 今天", text: work.title + " 这种作品最适合拿来测试完整详情页，因为主视觉、评分和相关推荐都很容易成立。" },
-      { user: "nightwindow", meta: "4 星 · 昨晚", text: "如果作品页是平台气质的核心，那么 " + work.title + " 这类条目正好能说明为什么用户会愿意留下长评和收藏。" },
-      { user: "profile_trace", meta: "4 星 · 3 天前", text: "它不仅能在单页里成立，也很适合被放进个人中心的收藏夹和用户评价流里继续发酵。" }
+      {
+        id: "longform_club",
+        user: "longform_club",
+        meta: "5 星 · 今天",
+        text: work.title + " 这种作品最适合拿来测试完整详情页，因为主视觉、评分和相关推荐都很容易成立。",
+        likes: 341,
+        followUps: [
+          { user: "scene_split", time: "35 分钟前", text: "尤其是它的封面、评分和相似推荐放在一起的时候，站点气质一下就出来了。" },
+          { user: "Christopher", time: "刚刚", text: "这一条很适合放在长评区顶部，信息和情绪都兼顾到了。" }
+        ]
+      },
+      {
+        id: "nightwindow",
+        user: "nightwindow",
+        meta: "4 星 · 昨晚",
+        text: "如果作品页是平台气质的核心，那么 " + work.title + " 这类条目正好能说明为什么用户会愿意留下长评和收藏。",
+        likes: 214,
+        followUps: [
+          { user: "slowburn", time: "1 小时前", text: "而且它会让人很想去点作者页或者同主创作品，这个联动感特别重要。" }
+        ]
+      },
+      {
+        id: "profile_trace",
+        user: "profile_trace",
+        meta: "4 星 · 3 天前",
+        text: "它不仅能在单页里成立，也很适合被放进个人中心的收藏夹和用户评价流里继续发酵。",
+        likes: 167,
+        followUps: [
+          { user: "mellowtape", time: "昨天", text: "对，这种作品很适合被不同收藏夹二次整理，用户会更愿意留下自己的标签。" }
+        ]
+      }
     ];
   }
 
   function workMetaLine(work) {
     return [work.creator, work.year, work.genre].filter(Boolean).join(" · ");
+  }
+
+  function readStoredReviewState() {
+    try {
+      const raw = window.localStorage.getItem(REVIEW_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function writeStoredReviewState(nextState) {
+    try {
+      window.localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(nextState));
+    } catch (error) {
+      return;
+    }
+  }
+
+  function mergeReviewState(workId, reviews) {
+    const stored = readStoredReviewState();
+    const workState = stored[workId] || {};
+
+    return reviews.map(function (review) {
+      const saved = workState[review.id] || {};
+      return Object.assign({}, review, {
+        likes: typeof saved.likes === "number" ? saved.likes : review.likes,
+        liked: Boolean(saved.liked),
+        followUps: review.followUps.concat(Array.isArray(saved.followUps) ? saved.followUps : [])
+      });
+    });
+  }
+
+  function persistReviewState(workId, reviewId, patch) {
+    const stored = readStoredReviewState();
+    const workState = stored[workId] || {};
+    const reviewState = workState[reviewId] || {};
+    stored[workId] = Object.assign({}, workState, {
+      [reviewId]: Object.assign({}, reviewState, patch)
+    });
+    writeStoredReviewState(stored);
+  }
+
+  function ReviewInteraction(props) {
+    const review = props.review;
+    const [liked, setLiked] = React.useState(Boolean(review.liked));
+    const [likes, setLikes] = React.useState(review.likes);
+    const [expanded, setExpanded] = React.useState(Boolean(review.followUps.length));
+    const [draft, setDraft] = React.useState("");
+    const [followUps, setFollowUps] = React.useState(review.followUps);
+
+    function toggleLike() {
+      const nextLiked = !liked;
+      const nextLikes = likes + (nextLiked ? 1 : -1);
+      setLiked(nextLiked);
+      setLikes(nextLikes);
+      persistReviewState(props.workId, review.id, {
+        liked: nextLiked,
+        likes: nextLikes,
+        followUps: followUps.filter(function (item) { return item.isUserCreated; })
+      });
+    }
+
+    function submitFollowUp() {
+      const value = draft.trim();
+      if (!value) {
+        return;
+      }
+
+      const nextFollowUps = followUps.concat([
+        {
+          user: "Christopher",
+          time: "刚刚",
+          text: value,
+          isUserCreated: true
+        }
+      ]);
+
+      setFollowUps(nextFollowUps);
+      setDraft("");
+      setExpanded(true);
+      persistReviewState(props.workId, review.id, {
+        liked: liked,
+        likes: likes,
+        followUps: nextFollowUps.filter(function (item) { return item.isUserCreated; })
+      });
+    }
+
+    return e("div", { className: "review-interaction" }, [
+      e("div", { className: "review-toolbar", key: "toolbar" }, [
+        e("button", {
+          type: "button",
+          className: liked ? "review-action is-active" : "review-action",
+          onClick: toggleLike,
+          key: "like"
+        }, liked ? "已赞 " + likes : "点赞 " + likes),
+        e("button", {
+          type: "button",
+          className: expanded ? "review-action is-active" : "review-action",
+          onClick: function () {
+            setExpanded(!expanded);
+          },
+          key: "reply"
+        }, (expanded ? "收起追评" : "追评") + " " + followUps.length)
+      ]),
+      expanded ? e("div", { className: "follow-up-thread", key: "thread" }, [
+        followUps.length ? e("div", { className: "follow-up-list", key: "list" },
+          followUps.map(function (item, index) {
+            return e("article", { className: "follow-up-item", key: item.user + "-" + index + "-" + item.time }, [
+              e("div", { className: "follow-up-head", key: "head" }, [
+                e("strong", { key: "user" }, item.user),
+                e("span", { key: "time" }, item.time)
+              ]),
+              e("p", { key: "text" }, item.text)
+            ]);
+          })
+        ) : e("p", { className: "follow-up-empty", key: "empty" }, "还没有追评，你可以留下第一条。"),
+        e("div", { className: "follow-up-compose", key: "compose" }, [
+          e("textarea", {
+            className: "follow-up-input",
+            rows: 3,
+            placeholder: "写一条追评，继续聊聊这个作品。",
+            value: draft,
+            onChange: function (event) {
+              setDraft(event.target.value);
+            },
+            key: "input"
+          }),
+          e("div", { className: "follow-up-actions", key: "actions" }, [
+            e("span", { className: "follow-up-hint", key: "hint" }, "追评会保存在当前浏览器里，方便你继续看效果。"),
+            e("button", {
+              type: "button",
+              className: "accent-button review-submit",
+              onClick: submitFollowUp,
+              key: "submit"
+            }, "发布追评")
+          ])
+        ])
+      ]) : null
+    ]);
   }
 
   function WorkDetailPage(props) {
@@ -512,8 +706,14 @@
     }).slice(0, 3);
     const bars = buildRatingBars(work.rating);
     const facts = workFacts(work);
-    const shortReviews = buildShortReviews(work);
-    const longReviews = buildLongReviews(work);
+    const shortReviews = React.useMemo(function () {
+      return mergeReviewState(work.id + "-short", buildShortReviews(work));
+    }, [work]);
+    const longReviews = React.useMemo(function () {
+      return mergeReviewState(work.id + "-long", buildLongReviews(work));
+    }, [work]);
+    const totalReviewLikes = longReviews.reduce(function (sum, review) { return sum + review.likes; }, 0);
+    const totalFollowUps = longReviews.reduce(function (sum, review) { return sum + review.followUps.length; }, 0);
     const backdropStyle = {
       backgroundImage:
         "linear-gradient(180deg, rgba(5, 12, 18, 0.16) 0%, rgba(5, 12, 18, 0.1) 34%, rgba(7, 19, 28, 0.92) 70%, #07131c 100%), url('" + work.backdrop + "')"
@@ -573,7 +773,8 @@
             e("div", { className: "rating-score-card", key: "score" }, [
               e("strong", { key: "value" }, String(work.rating)),
               e("span", { key: "label" }, "综合评分"),
-              e("small", { key: "meta" }, "基于 " + (work.category === "events" ? "2.1k" : "8.4k") + " 次评分")
+              e("small", { key: "meta" }, "基于 " + (work.category === "events" ? "2.1k" : "8.4k") + " 次评分"),
+              e("small", { className: "rating-supporting-meta", key: "engagement" }, totalReviewLikes + " 个赞 · " + totalFollowUps + " 条追评")
             ]),
             e("div", { className: "rating-bars", key: "bars" },
               bars.map(function (bar) {
@@ -590,7 +791,8 @@
               return e("article", { className: "review-card", key: review.user }, [
                 e("strong", { key: "user" }, review.user),
                 e("span", { key: "score" }, review.score),
-                e("p", { key: "text" }, review.text)
+                e("p", { key: "text" }, review.text),
+                e(ReviewInteraction, { key: "actions", review: review, workId: work.id + "-short" })
               ]);
             })
           )
@@ -609,7 +811,8 @@
                   e("strong", { key: "user" }, review.user),
                   e("span", { key: "meta" }, review.meta)
                 ]),
-                e("p", { key: "text" }, review.text)
+                e("p", { key: "text" }, review.text),
+                e(ReviewInteraction, { key: "actions", review: review, workId: work.id + "-long" })
               ]);
             })
           )
