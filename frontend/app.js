@@ -231,6 +231,10 @@
 
   const globalSearchIndex = buildSearchIndex();
 
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
   function matchesRating(cardRating, filterRating) {
     if (filterRating === "全部" || !filterRating) {
       return true;
@@ -716,11 +720,157 @@
     ReactDOM.createRoot(root).render(e(WorkDetailPage, { work: work }));
   }
 
+  function extractBackgroundUrl(element) {
+    const backgroundImage = window.getComputedStyle(element).backgroundImage || "";
+    const matches = Array.from(backgroundImage.matchAll(/url\((['"]?)(.*?)\1\)/g));
+    if (!matches.length) {
+      return "";
+    }
+    return matches[matches.length - 1][2];
+  }
+
+  function getContrastSource(element) {
+    const image = element.querySelector("img");
+    if (image && (image.currentSrc || image.src)) {
+      return image.currentSrc || image.src;
+    }
+    return extractBackgroundUrl(element);
+  }
+
+  function sampleImageBrightness(url, onDone) {
+    if (!url) {
+      onDone(null);
+      return;
+    }
+
+    const image = new Image();
+    image.crossOrigin = "anonymous";
+    image.referrerPolicy = "no-referrer";
+    image.onload = function () {
+      try {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d", { willReadFrequently: true });
+        if (!context) {
+          onDone(null);
+          return;
+        }
+
+        const width = 36;
+        const height = 36;
+        canvas.width = width;
+        canvas.height = height;
+        context.drawImage(image, 0, 0, width, height);
+
+        const pixels = context.getImageData(0, 0, width, height).data;
+        let total = 0;
+        for (let index = 0; index < pixels.length; index += 4) {
+          const red = pixels[index];
+          const green = pixels[index + 1];
+          const blue = pixels[index + 2];
+          total += 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+        }
+
+        onDone(total / (pixels.length / 4));
+      } catch (error) {
+        onDone(null);
+      }
+    };
+    image.onerror = function () {
+      onDone(null);
+    };
+    image.src = url;
+  }
+
+  function applyContrastValues(element, brightness) {
+    const normalized = brightness == null ? 0.55 : clamp(brightness / 255, 0, 1);
+    const topAlpha = clamp(0.1 + normalized * 0.2, 0.14, 0.34);
+    const middleAlpha = clamp(0.2 + normalized * 0.28, 0.24, 0.48);
+    const bottomAlpha = clamp(0.56 + normalized * 0.24, 0.62, 0.86);
+    const glowAlpha = clamp(0.08 + normalized * 0.12, 0.08, 0.2);
+    const titleShadow = clamp(0.38 + normalized * 0.2, 0.38, 0.62);
+    const copyShadow = clamp(0.18 + normalized * 0.18, 0.18, 0.36);
+
+    element.style.setProperty("--surface-overlay-top", "rgba(4, 10, 16, " + topAlpha.toFixed(3) + ")");
+    element.style.setProperty("--surface-overlay-mid", "rgba(4, 10, 16, " + middleAlpha.toFixed(3) + ")");
+    element.style.setProperty("--surface-overlay-bottom", "rgba(4, 10, 16, " + bottomAlpha.toFixed(3) + ")");
+    element.style.setProperty("--surface-glow-color", "rgba(7, 19, 28, " + glowAlpha.toFixed(3) + ")");
+    element.style.setProperty("--surface-title-shadow", "0 14px 32px rgba(0, 0, 0, " + titleShadow.toFixed(3) + "), 0 2px 8px rgba(0, 0, 0, " + (titleShadow + 0.12).toFixed(3) + ")");
+    element.style.setProperty("--surface-copy-shadow", "0 8px 22px rgba(0, 0, 0, " + copyShadow.toFixed(3) + ")");
+    element.dataset.contrastReady = "true";
+  }
+
+  function setupAdaptiveContrast() {
+    const surfaces = document.querySelectorAll(".hero, .category-hero, .item-hero, .profile-hero");
+    surfaces.forEach(function (surface) {
+      applyContrastValues(surface, null);
+      sampleImageBrightness(getContrastSource(surface), function (brightness) {
+        applyContrastValues(surface, brightness);
+      });
+    });
+  }
+
+  function prepareMotionStagger() {
+    const staggerTargets = document.querySelectorAll(
+      ".media-section, .filter-strip, .item-panel, .media-card, .collection-card, .review-card, .long-review-card"
+    );
+
+    staggerTargets.forEach(function (element, index) {
+      element.style.setProperty("--stagger-index", String(index % 12));
+    });
+  }
+
   function setupPageTransitions() {
     const overlay = document.querySelector(".page-transition-overlay");
+    let navigating = false;
 
-    window.requestAnimationFrame(function () {
+    function showReadyState() {
+      document.body.classList.add("motion-primed");
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(function () {
+          document.body.classList.add("page-ready");
+        });
+      });
+    }
+
+    function resetTransitionState() {
+      navigating = false;
+      document.body.classList.remove("is-transitioning");
+      if (overlay) {
+        overlay.classList.remove("is-visible");
+      }
+    }
+
+    function navigateTo(href) {
+      if (navigating) {
+        return;
+      }
+
+      navigating = true;
+      document.body.classList.add("is-transitioning");
+      if (overlay) {
+        overlay.classList.add("is-visible");
+      }
+
+      window.setTimeout(function () {
+        window.location.href = href;
+      }, 340);
+    }
+
+    prepareMotionStagger();
+    showReadyState();
+
+    window.addEventListener("pageshow", function () {
+      resetTransitionState();
       document.body.classList.add("page-ready");
+    });
+
+    window.addEventListener("pagehide", resetTransitionState);
+    window.addEventListener("popstate", resetTransitionState);
+    window.addEventListener("focus", resetTransitionState);
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) {
+        resetTransitionState();
+      }
     });
 
     document.addEventListener("click", function (event) {
@@ -735,14 +885,7 @@
       }
 
       event.preventDefault();
-      document.body.classList.add("is-transitioning");
-      if (overlay) {
-        overlay.classList.add("is-visible");
-      }
-
-      window.setTimeout(function () {
-        window.location.href = href;
-      }, 260);
+      navigateTo(href);
     });
 
     document.addEventListener("click", function (event) {
@@ -757,14 +900,7 @@
         return;
       }
 
-      document.body.classList.add("is-transitioning");
-      if (overlay) {
-        overlay.classList.add("is-visible");
-      }
-
-      window.setTimeout(function () {
-        window.location.href = buildWorkHref(work);
-      }, 260);
+      navigateTo(buildWorkHref(work));
     });
   }
 
@@ -772,6 +908,7 @@
     mountWorkDetailPage();
     enhanceWorkLinks();
     mountReactIslands();
+    setupAdaptiveContrast();
     setupPageTransitions();
   }
 
